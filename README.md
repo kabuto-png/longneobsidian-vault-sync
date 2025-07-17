@@ -22,10 +22,12 @@ A powerful Obsidian plugin for Git vault synchronization with auto-sync capabili
 - **Clickable status bar** - Click for detailed information
 
 ### 🎛️ Comprehensive Control
-- **Multiple sync scripts** - Choose between basic/advanced/optimized
+- **Multiple sync scripts** - Choose between basic/advanced/optimized/coordinated
+- **iCloud coordination** - Mobile-desktop sync with conflict prevention
 - **Manual sync** - Trigger immediate sync via ribbon or command
 - **Notification control** - Enable/disable sync status messages
 - **Status modal** - Detailed sync information display
+- **Device coordination** - Seamless switching between devices
 
 ## 📦 Installation
 
@@ -97,6 +99,23 @@ else
 fi
 ```
 
+**Coordinated Script (`sync-vault-coordinated.sh`)** (iCloud Support):
+```bash
+#!/bin/bash
+set -e
+cd "$(dirname "$0")"
+
+# iCloud coordination for mobile-desktop sync
+# - Detects recent iCloud activity
+# - Coordinates device switches
+# - Waits for iCloud to settle
+# - Handles mobile-desktop conflicts
+
+# Check iCloud activity and coordinate
+echo "🔄 Starting coordinated vault sync with iCloud support..."
+# [Full implementation in examples/sync-vault-coordinated.sh]
+```
+
 ### 3. Enable Plugin
 1. Go to **Settings** → **Community plugins**
 2. Find **"Vault Sync"** and **toggle ON**
@@ -147,6 +166,7 @@ Configure the plugin in **Settings → Community plugins → Vault Sync**:
 - **Basic** - Simple Git operations
 - **Advanced** - Enhanced with error handling
 - **Optimized** - Full-featured with conflict resolution ⭐ **Recommended**
+- **With iCloud** - Mobile-desktop coordination with iCloud support 📱 **New!**
 
 ### Auto-Sync Settings
 - **Interval Range** - 1 to 60 minutes

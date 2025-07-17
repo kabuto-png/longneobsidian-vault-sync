@@ -107,6 +107,7 @@ Choose your preferred script:
 - **Basic** (`sync-vault.sh`) - Simple Git operations
 - **Advanced** (`sync-vault-advanced.sh`) - Location-flexible
 - **Optimized** (`sync-vault-optimized.sh`) - Recommended
+- **With iCloud** (`sync-vault-coordinated.sh`) - Mobile-desktop coordination
 
 #### Auto-sync Configuration
 - **Enable Auto-sync** - Toggle on/off

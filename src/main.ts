@@ -15,7 +15,7 @@ export interface VaultSyncSettings {
 }
 
 const DEFAULT_SETTINGS: VaultSyncSettings = {
-    syncScript: 'sync-vault-advanced.sh',
+    syncScript: 'sync-vault-coordinated.sh',
     autoSyncInterval: 5,
     autoSyncEnabled: false,
     showNotifications: true,
@@ -271,6 +271,7 @@ class VaultSyncSettingTab extends PluginSettingTab {
                 .addOption('sync-vault.sh', 'Basic')
                 .addOption('sync-vault-advanced.sh', 'Advanced')
                 .addOption('sync-vault-optimized.sh', 'Optimized')
+                .addOption('sync-vault-coordinated.sh', 'With iCloud')
                 .setValue(this.plugin.settings.syncScript)
                 .onChange(async (value) => {
                     this.plugin.settings.syncScript = value;

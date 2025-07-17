@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved documentation and examples
 - GitHub Actions for automated releases
 - ESLint and Prettier configuration
+- iCloud coordination support for mobile-desktop sync
+- Coordinated sync script with device switching
+- Mobile-desktop conflict prevention
 
 ### Changed
 - Migrated from JavaScript to TypeScript

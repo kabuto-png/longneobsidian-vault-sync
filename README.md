@@ -42,6 +42,28 @@ A powerful Obsidian plugin for Git vault synchronization with auto-sync capabili
 3. Run `npm run build` to build the plugin
 4. Copy `main.js`, `manifest.json`, and `styles.css` to your `.obsidian/plugins/vault-sync/` directory
 
+## 💻 Cross-Platform Support
+
+### Unix/macOS/Linux
+Use the scripts in the `/examples/` directory:
+- `sync-vault.sh` - Basic sync script
+- `sync-vault-advanced.sh` - Enhanced with error handling  
+- `sync-vault-optimized.sh` - Full-featured (recommended)
+- `sync-vault-coordinated.sh` - iCloud support
+
+### Windows
+Use the scripts in the `/windows/` directory:
+- `sync-vault.bat` - Pure Windows batch script
+- `sync-vault.ps1` - PowerShell version with better error handling
+- `sync-vault-wsl.bat` - WSL wrapper for original bash scripts
+
+**Windows Installation:**
+1. Choose your preferred script from `/windows/` directory
+2. Copy it to your vault root directory
+3. Configure Obsidian plugin to use the script
+
+See `/windows/README.md` for detailed Windows setup instructions.
+
 ## 🚀 Quick Start
 
 ### 1. Prerequisites
@@ -52,6 +74,8 @@ A powerful Obsidian plugin for Git vault synchronization with auto-sync capabili
 ### 2. Sync Scripts
 Create one of these scripts in your vault root directory:
 
+**For Unix/macOS/Linux:**
+
 **Basic Script (`sync-vault.sh`)**:
 ```bash
 #!/bin/bash
@@ -59,6 +83,26 @@ git add .
 git commit -m "$1"
 git push origin main
 ```
+
+**For Windows:**
+
+**Basic Batch Script (`sync-vault.bat`)**:
+```batch
+@echo off
+git add .
+git commit -m "%~1"
+git push origin main
+```
+
+**PowerShell Script (`sync-vault.ps1`)**:
+```powershell
+param([string]$CommitMessage = "Auto-sync $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')")
+git add .
+git commit -m $CommitMessage
+git push origin main
+```
+
+> 📁 **Windows users**: Check the `/windows/` directory for complete Windows-compatible scripts with error handling, WSL support, and detailed documentation.
 
 **Advanced Script (`sync-vault-advanced.sh`)**:
 ```bash

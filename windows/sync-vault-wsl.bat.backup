@@ -1,0 +1,40 @@
+@echo off
+:: WSL Wrapper Script for Obsidian Vault Sync
+:: This script allows Windows users to use the original bash script via WSL
+:: Requires WSL to be installed and configured
+
+echo Starting vault sync via WSL...
+
+:: Check if WSL is available
+wsl --version >nul 2>&1
+if %errorlevel% neq 0 (
+    echo Error: WSL is not installed or not available
+    echo Please install WSL or use sync-vault.bat instead
+    pause
+    exit /b 1
+)
+
+:: Get the current directory and convert to WSL path
+for %%I in (.) do set "CURRENT_DIR=%%~fI"
+set "WSL_PATH=%CURRENT_DIR%"
+set "WSL_PATH=%WSL_PATH:C:=/mnt/c%"
+set "WSL_PATH=%WSL_PATH:D:=/mnt/d%"
+set "WSL_PATH=%WSL_PATH:E:=/mnt/e%"
+set "WSL_PATH=%WSL_PATH:\=/%"
+
+:: Pass the commit message to the bash script
+set "COMMIT_MSG=%~1"
+if "%COMMIT_MSG%"=="" (
+    wsl bash -c "cd '%WSL_PATH%' && bash ../examples/sync-vault.sh"
+) else (
+    wsl bash -c "cd '%WSL_PATH%' && bash ../examples/sync-vault.sh '%COMMIT_MSG%'"
+)
+
+if %errorlevel% neq 0 (
+    echo Error: WSL sync failed
+    pause
+    exit /b 1
+)
+
+echo WSL sync completed successfully!
+pause

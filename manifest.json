@@ -1,0 +1,11 @@
+{
+  "id": "vault-sync",
+  "name": "Vault Sync",
+  "version": "2.1.0",
+  "minAppVersion": "0.15.0",
+  "description": "Git vault synchronization with auto-sync, status tracking, and time information",
+  "author": "kabuto-png",
+  "authorUrl": "https://github.com/kabuto-png",
+  "fundingUrl": "https://github.com/sponsors/kabuto-png",
+  "isDesktopOnly": true
+}

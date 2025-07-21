@@ -1,0 +1,188 @@
+/* Vault Sync Plugin Styles */
+
+.vault-sync-status {
+    padding: 10px;
+    background: var(--background-secondary);
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.vault-sync-enabled {
+    color: var(--text-success);
+}
+
+.vault-sync-disabled {
+    color: var(--text-muted);
+}
+
+.vault-sync-button {
+    margin-right: 10px;
+}
+
+/* Status bar styling */
+.vault-sync-statusbar {
+    cursor: pointer;
+    padding: 0 8px;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+}
+
+.vault-sync-statusbar:hover {
+    background-color: var(--background-modifier-hover);
+}
+
+/* Settings panel styling */
+.vault-sync-settings .setting-item {
+    margin-bottom: 15px;
+}
+
+.vault-sync-settings .setting-item-heading {
+    color: var(--text-normal);
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.vault-sync-settings .setting-item-description {
+    color: var(--text-muted);
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+/* Status display in settings */
+.vault-sync-current-status {
+    background: var(--background-secondary);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid var(--background-modifier-border);
+}
+
+.vault-sync-current-status h3 {
+    margin: 0 0 10px 0;
+    color: var(--text-normal);
+    font-size: 1.1em;
+}
+
+.vault-sync-current-status p {
+    margin: 5px 0;
+    color: var(--text-muted);
+}
+
+.vault-sync-current-status strong {
+    color: var(--text-normal);
+}
+
+/* Action buttons */
+.vault-sync-action-button {
+    margin-right: 10px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.vault-sync-action-button.mod-cta {
+    background: var(--interactive-accent);
+    color: var(--text-on-accent);
+}
+
+.vault-sync-action-button:hover {
+    opacity: 0.8;
+}
+
+/* Sync script dropdown */
+.vault-sync-script-dropdown {
+    min-width: 200px;
+}
+
+/* Auto-sync slider */
+.vault-sync-interval-slider {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Toggle switches */
+.vault-sync-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.vault-sync-toggle-label {
+    color: var(--text-normal);
+    font-weight: 500;
+}
+
+/* Notifications */
+.vault-sync-notice {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.vault-sync-notice-icon {
+    flex-shrink: 0;
+    font-size: 1.2em;
+}
+
+.vault-sync-notice-text {
+    flex: 1;
+    color: var(--text-normal);
+}
+
+/* Success state */
+.vault-sync-success {
+    color: var(--text-success);
+}
+
+/* Error state */
+.vault-sync-error {
+    color: var(--text-error);
+}
+
+/* Warning state */
+.vault-sync-warning {
+    color: var(--text-warning);
+}
+
+/* Info state */
+.vault-sync-info {
+    color: var(--text-accent);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .vault-sync-current-status {
+        padding: 10px;
+    }
+    
+    .vault-sync-action-button {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+    
+    .vault-sync-statusbar {
+        font-size: 0.9em;
+    }
+}
+
+/* Dark mode adjustments */
+.theme-dark .vault-sync-current-status {
+    background: var(--background-secondary);
+    border-color: var(--background-modifier-border);
+}
+
+.theme-dark .vault-sync-statusbar:hover {
+    background-color: var(--background-modifier-hover);
+}
+
+/* Light mode adjustments */
+.theme-light .vault-sync-current-status {
+    background: var(--background-primary-alt);
+    border-color: var(--background-modifier-border);
+}
+
+.theme-light .vault-sync-statusbar:hover {
+    background-color: var(--background-modifier-hover);
+}

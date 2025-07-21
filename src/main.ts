@@ -15,7 +15,7 @@ export interface VaultSyncSettings {
 }
 
 const DEFAULT_SETTINGS: VaultSyncSettings = {
-    syncScript: 'sync-vault-coordinated.sh',
+    syncScript: process.platform === 'win32' ? 'sync-vault.ps1' : 'sync-vault-coordinated.sh',
     autoSyncInterval: 5,
     autoSyncEnabled: false,
     showNotifications: true,
@@ -140,7 +140,26 @@ export default class VaultSyncPlugin extends Plugin {
         const startTime = new Date();
         const timestamp = startTime.toISOString().slice(0, 16).replace('T', ' ');
         const message = customMessage || `Vault sync - ${timestamp}`;
-        const command = `cd "${vaultPath}" && bash ${syncScript} "${message}"`;
+        
+        // Detect OS and use appropriate command
+        const isWindows = process.platform === 'win32';
+        let command: string;
+        
+        if (isWindows) {
+            // Windows: Try PowerShell first, then batch, then WSL bash
+            if (syncScript.endsWith('.ps1')) {
+                command = `cd "${vaultPath}" && powershell -ExecutionPolicy Bypass -File "${syncScript}" "${message}"`;
+            } else if (syncScript.endsWith('.bat')) {
+                command = `cd "${vaultPath}" && "${syncScript}" "${message}"`;
+            } else {
+                // Try to find Windows equivalent or use WSL
+                const windowsScript = syncScript.replace('.sh', '.ps1');
+                command = `cd "${vaultPath}" && powershell -ExecutionPolicy Bypass -File "${windowsScript}" "${message}"`;
+            }
+        } else {
+            // Unix/macOS: Use bash
+            command = `cd "${vaultPath}" && bash ${syncScript} "${message}"`;
+        }
 
         try {
             if (showNotifications) {
@@ -263,21 +282,36 @@ class VaultSyncSettingTab extends PluginSettingTab {
             <p><strong>Script:</strong> ${this.plugin.settings.syncScript}</p>
         `;
 
-        // Sync script selection
+        // Sync script selection - detect available scripts based on OS
+        const isWindows = process.platform === 'win32';
         new Setting(containerEl)
             .setName('Sync Script')
             .setDesc('Which sync script to use')
-            .addDropdown(dropdown => dropdown
-                .addOption('sync-vault.sh', 'Basic')
-                .addOption('sync-vault-advanced.sh', 'Advanced')
-                .addOption('sync-vault-optimized.sh', 'Optimized')
-                .addOption('sync-vault-coordinated.sh', 'With iCloud')
-                .setValue(this.plugin.settings.syncScript)
-                .onChange(async (value) => {
-                    this.plugin.settings.syncScript = value;
-                    await this.plugin.saveSettings();
-                    this.display();
-                }));
+            .addDropdown(dropdown => {
+                if (isWindows) {
+                    // Windows: PowerShell and Batch scripts
+                    dropdown
+                        .addOption('sync-vault.ps1', 'Basic (PowerShell)')
+                        .addOption('sync-vault.bat', 'Basic (Batch)')
+                        .addOption('sync-vault-coordinated.ps1', 'With iCloud (PowerShell)')
+                        .addOption('sync-vault-coordinated.sh', 'WSL Bash (requires WSL)');
+                } else {
+                    // Unix/macOS: Bash scripts
+                    dropdown
+                        .addOption('sync-vault.sh', 'Basic')
+                        .addOption('sync-vault-advanced.sh', 'Advanced')
+                        .addOption('sync-vault-optimized.sh', 'Optimized')
+                        .addOption('sync-vault-coordinated.sh', 'With iCloud');
+                }
+                
+                return dropdown
+                    .setValue(this.plugin.settings.syncScript)
+                    .onChange(async (value) => {
+                        this.plugin.settings.syncScript = value;
+                        await this.plugin.saveSettings();
+                        this.display();
+                    });
+            });
 
         // Auto-sync toggle
         new Setting(containerEl)

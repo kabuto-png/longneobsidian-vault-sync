@@ -192,6 +192,11 @@ download_scripts() {
             curl -s -L "$base_url/windows/sync-vault.ps1" -o "sync-vault.ps1" 2>/dev/null
             curl -s -L "$base_url/windows/sync-vault.bat" -o "sync-vault.bat" 2>/dev/null
             curl -s -L "$base_url/windows/sync-vault-wsl.bat" -o "sync-vault-wsl.bat" 2>/dev/null
+            
+            # Download PowerShell scripts from root
+            curl -s -L "$base_url/sync-vault.ps1" -o "sync-vault.ps1" 2>/dev/null
+            curl -s -L "$base_url/sync-vault-coordinated.ps1" -o "sync-vault-coordinated.ps1" 2>/dev/null
+            
             print_success "Downloaded Windows scripts (PowerShell, Batch, WSL)"
             ;;
         "macos"|"linux")

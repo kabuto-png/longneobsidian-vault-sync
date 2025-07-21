@@ -196,12 +196,25 @@ download_scripts() {
             ;;
         "macos"|"linux")
             print_info "Downloading Unix scripts..."
-            if curl -s -L "$base_url/sync-vault.sh" -o "sync-vault.sh"; then
+            # First try to download sync-vault.sh
+            if curl -s -L "$base_url/sync-vault.sh" -o "sync-vault.sh" && [[ -s "sync-vault.sh" ]] && ! grep -q "404" "sync-vault.sh"; then
                 chmod +x sync-vault.sh
                 print_success "Downloaded bash script"
             else
-                print_error "Failed to download bash script"
-                exit 1
+                # Fallback: create basic sync script if download fails
+                print_warning "Failed to download sync-vault.sh, creating fallback script..."
+                cat > sync-vault.sh << 'EOF'
+#!/bin/bash
+# Fallback Obsidian Vault Sync Script
+echo "🔄 Syncing vault..."
+git add .
+git commit -m "Vault sync: $(date)"
+git pull --rebase
+git push
+echo "✅ Sync complete"
+EOF
+                chmod +x sync-vault.sh
+                print_success "Created fallback bash script"
             fi
             ;;
     esac

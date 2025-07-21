@@ -82,14 +82,26 @@ download_scripts() {
     
     local base_url="https://raw.githubusercontent.com/kabuto-png/longneobsidian-vault-sync/main"
     
-    # Download universal wrapper
+    # Create plugin directory structure
+    local plugin_dir=".obsidian/plugins/longneobsidian-vault-sync"
+    mkdir -p "$plugin_dir"
+    
+    # Download universal wrapper (both locations)
     if curl -s -L "$base_url/sync-vault-coordinated.sh" -o "sync-vault-coordinated.sh"; then
         chmod +x sync-vault-coordinated.sh
+        # Also copy to plugin directory for settings
+        cp "sync-vault-coordinated.sh" "$plugin_dir/"
         print_success "Downloaded universal wrapper"
     else
         print_error "Failed to download universal wrapper"
         exit 1
     fi
+    
+    # Download plugin configuration files
+    print_info "Setting up plugin configuration..."
+    curl -s -L "$base_url/manifest.json" -o "$plugin_dir/manifest.json" 2>/dev/null
+    curl -s -L "$base_url/main.js" -o "$plugin_dir/main.js" 2>/dev/null
+    curl -s -L "$base_url/README.md" -o "$plugin_dir/README.md" 2>/dev/null
     
     # Download OS-specific scripts
     case $OS_TYPE in
@@ -98,12 +110,18 @@ download_scripts() {
             curl -s -L "$base_url/windows/sync-vault.ps1" -o "sync-vault.ps1"
             curl -s -L "$base_url/windows/sync-vault.bat" -o "sync-vault.bat"
             curl -s -L "$base_url/windows/sync-vault-wsl.bat" -o "sync-vault-wsl.bat"
+            # Copy to plugin directory as well
+            cp sync-vault.ps1 "$plugin_dir/" 2>/dev/null
+            cp sync-vault.bat "$plugin_dir/" 2>/dev/null
+            cp sync-vault-wsl.bat "$plugin_dir/" 2>/dev/null
             print_success "Downloaded Windows scripts (PowerShell, Batch, WSL)"
             ;;
         "macos"|"linux")
             print_info "Downloading Unix scripts..."
             if curl -s -L "$base_url/sync-vault.sh" -o "sync-vault.sh"; then
                 chmod +x sync-vault.sh
+                # Copy to plugin directory as well
+                cp "sync-vault.sh" "$plugin_dir/"
                 print_success "Downloaded bash script"
             else
                 print_error "Failed to download bash script"
@@ -111,6 +129,8 @@ download_scripts() {
             fi
             ;;
     esac
+    
+    print_success "Plugin directory structure created: $plugin_dir"
 }
 
 setup_git() {
@@ -171,10 +191,33 @@ EOF
 test_installation() {
     print_info "Testing installation..."
     
+    local plugin_dir=".obsidian/plugins/longneobsidian-vault-sync"
+    
+    # Test vault root scripts
     if [[ -f "sync-vault-coordinated.sh" ]]; then
-        print_success "Universal wrapper: ✓"
+        print_success "Universal wrapper (vault root): ✓"
     else
-        print_error "Universal wrapper: ✗"
+        print_error "Universal wrapper (vault root): ✗"
+        return 1
+    fi
+    
+    # Test plugin directory
+    if [[ -d "$plugin_dir" ]]; then
+        print_success "Plugin directory: ✓"
+        
+        if [[ -f "$plugin_dir/manifest.json" ]]; then
+            print_success "Plugin manifest: ✓"
+        else
+            print_warning "Plugin manifest: ✗ (optional)"
+        fi
+        
+        if [[ -f "$plugin_dir/sync-vault-coordinated.sh" ]]; then
+            print_success "Plugin scripts: ✓"
+        else
+            print_warning "Plugin scripts: ✗ (optional)"
+        fi
+    else
+        print_error "Plugin directory: ✗"
         return 1
     fi
     
@@ -213,6 +256,7 @@ show_next_steps() {
     print_info "The installer has set up:"
     echo "  ✓ Universal wrapper script (auto-detects your OS)"
     echo "  ✓ Platform-specific sync scripts"
+    echo "  ✓ Plugin directory structure (.obsidian/plugins/longneobsidian-vault-sync/)"
     case $OS_TYPE in
         "windows")
             echo "  ✓ Windows: PowerShell (.ps1), Batch (.bat), WSL (.bat)"

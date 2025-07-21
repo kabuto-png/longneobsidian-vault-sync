@@ -1,0 +1,37 @@
+feat: Complete plugin auto-installation in install script
+
+BREAKING CHANGE: Install script now performs full plugin setup automatically
+
+## What's New ✨
+- **Complete Plugin Installation**: Automatically clones, builds, and installs the Obsidian plugin
+- **TypeScript Build**: Runs `npm install` and `npm run build` to generate main.js
+- **Prerequisites Check**: Validates Git, Node.js, and npm before starting
+- **Cross-Platform Support**: Works on Windows, macOS, and Linux with proper script detection
+
+## Technical Improvements 🔧
+- Auto-creates `.obsidian/plugins/longneobsidian-vault-sync/` directory
+- Downloads and builds plugin from source with all dependencies
+- Installs sync scripts to vault root for plugin detection
+- Comprehensive error handling and status reporting
+- Enhanced .gitignore with plugin development files
+
+## User Experience 📈
+- **One-Command Setup**: Single script now handles everything automatically
+- **Zero Manual Steps**: No more manual GitHub cloning or npm building
+- **Complete Validation**: Tests plugin files, scripts, and execution
+- **Clear Instructions**: Detailed next steps for Obsidian plugin activation
+
+## Before vs After
+**Before**: Install script + manual plugin clone + manual build + manual setup
+**After**: Single `bash <(curl -s URL)` command handles everything
+
+## Benefits
+- Eliminates user confusion about missing plugin directory
+- Ensures proper TypeScript compilation for all users  
+- Reduces support requests for incomplete installations
+- Provides consistent cross-platform experience
+
+This resolves the core issue where users had sync scripts but missing plugin structure.
+Users now get a complete, working plugin installation in one command.
+
+Ready for immediate deployment to improve user onboarding experience.

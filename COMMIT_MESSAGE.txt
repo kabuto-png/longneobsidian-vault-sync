@@ -1,0 +1,15 @@
+feat: Add universal cross-platform sync wrapper for Obsidian
+
+- Add sync-vault-coordinated.sh: Universal wrapper with auto OS detection
+- Support Windows (PowerShell/Batch/WSL), macOS, and Linux environments  
+- Implement smart script priority system for optimal Windows experience
+- Include comprehensive error handling and colored status output
+- Solve Obsidian plugin detection issues with Windows-specific scripts
+- Add WRAPPER_README.md with detailed setup and troubleshooting guide
+
+This wrapper enables seamless cross-platform vault synchronization by automatically detecting the operating system and executing the appropriate platform-specific sync script, making it compatible with Obsidian sync plugins that only recognize .sh files.
+
+Windows Priority: sync-vault.ps1 > sync-vault.bat > sync-vault-wsl.bat
+Other OS: sync-vault.sh (standard bash)
+
+Fixes: Plugin not detecting Windows .bat/.ps1 scripts in dropdown
